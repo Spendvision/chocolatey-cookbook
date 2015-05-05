@@ -30,6 +30,11 @@ powershell_script 'install chocolatey' do
   not_if { ChocolateyHelpers.chocolatey_installed? }
 end
 
+# We want to enable allowGlobalConfirmation feature to allow Choco to run scripts without interaction
+powershell_script 'enable chocolatey allowGlobalConfirmation feature' do
+  code "chocolatey feature enable -n allowGlobalConfirmation"
+end
+
 ruby_block "reset ENV['ChocolateyInstall']" do
   block do
     cmd = powershell_out!("[System.Environment]::GetEnvironmentVariable('ChocolateyInstall', 'MACHINE')")
